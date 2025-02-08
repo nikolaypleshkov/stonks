@@ -2,14 +2,13 @@ import React from "react";
 import { View } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import styled from "@emotion/native";
-import SignUpSVG from "@/components/ui/SignUp";
 import InputField from "@/components/ui/InputField";
 import Button from "@/components/ui/Button";
-import { GeneralInformationStepPayload } from "@/models/IRegistrationPayload";
-
-interface GeneralInformationStepProps {
-  onDataSubmit: (data: GeneralInformationStepPayload) => void;
-}
+import {
+  GeneralInformationStepPayload,
+} from "@/models/IRegistrationPayload";
+import Logo from "@/components/ui/Logo";
+import { FormStep } from "./FormStep";
 
 const ImageContainer = styled(View)(() => ({
   position: "relative",
@@ -24,27 +23,33 @@ const ButtonContainer = styled(View)(() => ({
   justifyContent: "center",
 }));
 
-const GeneralInformationStep: React.FC<GeneralInformationStepProps> = ({ onDataSubmit }) => {
+const GeneralInformationStep: React.FC<FormStep> = ({
+  initialData,
+  onDataSubmit,
+  onBack,
+}) => {
   const {
     control,
     handleSubmit,
-    getValues,
     formState: { errors },
   } = useForm<GeneralInformationStepPayload>({
     defaultValues: {
-      email: "",
-      password: "",
+      email: initialData?.email || "",
+      password: initialData?.password || "",
     },
   });
 
-  const onSubmit = React.useCallback((formData: GeneralInformationStepPayload) => {
-    onDataSubmit(formData);
-  }, []);
+  const onSubmit = React.useCallback(
+    (formData: GeneralInformationStepPayload) => {
+      onDataSubmit(formData);
+    },
+    []
+  );
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <ImageContainer>
-        <SignUpSVG />
+        <Logo />
       </ImageContainer>
       <Controller
         control={control}
@@ -57,6 +62,7 @@ const GeneralInformationStep: React.FC<GeneralInformationStepProps> = ({ onDataS
             autoCorrect={false}
             autoCapitalize="none"
             label="Email"
+            keyboardType="email-address"
             error={errors.email?.message}
           />
         )}
@@ -92,6 +98,7 @@ const GeneralInformationStep: React.FC<GeneralInformationStepProps> = ({ onDataS
           },
         }}
       />
+      <View style={{ flex: 1 }} />
       <ButtonContainer>
         <Button
           type="outline"
