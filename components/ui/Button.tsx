@@ -1,40 +1,56 @@
 import React from "react";
 import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
 import styled, { css } from "@emotion/native";
+import { LinkProps } from "expo-router";
+import { Theme } from "../theme/Theme";
 
-type ButtonComponentColor = "primary" | "secondary" | "warning" | "success" | "info" | "danger";
+type ButtonComponentColor =
+  | "primary"
+  | "secondary"
+  | "warning"
+  | "success"
+  | "info"
+  | "danger";
+
+type ButtonType = "solid" | "outline" | "clear";
+
 type ButtonSize = "xSmall" | "small" | "medium" | "large";
 
 type ButtonComponentProps = TouchableOpacityProps & {
-  color: ButtonComponentColor;
+  color?: ButtonComponentColor;
   size?: ButtonSize;
   title: string;
+  type?: ButtonType;
 };
 
 const StyledButton = styled(TouchableOpacity, {
-  shouldForwardProp: (prop) => prop !== "color" && prop !== "size",
-})<{ color: ButtonComponentColor, size: ButtonSize }>(({ theme, color, size }) => ({
-    backgroundColor: theme.colors[color],
+  shouldForwardProp: (prop) =>
+    prop !== "color" && prop !== "size" && prop !== "type",
+})<{ color: ButtonComponentColor; size: ButtonSize; type: ButtonType, theme?: Theme }>(
+  ({ theme, color, size, type }) => ({
+    backgroundColor: type === 'clear' || type === 'outline' ? 'transparent' :  theme.colors[color],
     padding: theme.spaces[size],
-    borderRadius: 25,
+    borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
     margin: theme.spaces.small,
-    width: "100%",
+    borderWidth: type === 'outline' ? .5 : 0,
+  })
+);
+
+const StyledText = styled(Text, {
+  shouldForwardProp: (prop) => prop !== "type",
+})<{ type: ButtonType, theme?: Theme }>(({ theme, type }) => ({
+  color: type === "clear" || type === 'outline' ? theme.colors.buttonSecondaryText : theme.colors.buttonText,
+  fontSize: 16,
 }));
 
-const StyledText = styled(Text)(({ theme }) => ({
-    color: theme.colors.text,
-    fontSize: 16,
-}));
-
-const Button: React.FC<ButtonComponentProps> = (props) => {
-  const { color, title, size = "small", ...rest } = props;
+const Button = React.forwardRef<LinkProps, ButtonComponentProps>(({ title, color = "primary", size = "small", type = 'solid', ...rest }, ref) => {
   return (
-    <StyledButton color={color} size={size} {...rest}>
-      <StyledText>{title}</StyledText>
+    <StyledButton color={color} size={size} type={type} {...rest} className="stonk-button">
+      <StyledText type={type}>{title}</StyledText>
     </StyledButton>
   );
-};
+});
 
 export default Button;

@@ -1,4 +1,6 @@
-const baseThemeOptions = {
+import { Theme } from "./Theme";
+
+const baseThemeOptions: Theme = {
     fonts: {
       primary: 'Roboto, sans-serif',
       secondary: 'Arial, sans-serif',
@@ -20,7 +22,14 @@ const baseThemeOptions = {
       warning: '#FFAB00',
       success: '#00C853',
       info: '#2196F3',
-      text: '#ffff',
+      text: '#333',
+      secondaryText: '#666',
+      buttonText: '#fff',
+      buttonSecondaryText: '#000',
+      textFieldBackground: '#fff',
+      clear: 'transparent',
+      border: '#ccc',
+      background: '#f9f9f9',
     },
     spaces: {
       xSmall: 4,
