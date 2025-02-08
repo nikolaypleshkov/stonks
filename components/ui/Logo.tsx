@@ -1,30 +1,32 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View } from "react-native";
+import styled from "@emotion/native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { Theme } from "../theme/Theme";
+
+const LogoContainer = styled(View)(() => ({
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "center",
+  marginTop: 20,
+  marginBottom: 30,
+  width: "100%",
+}));
+
+const LogoText = styled(Text)<{ theme?: Theme }>(({ theme }) => ({
+  textAlign: "center",
+  fontSize: 24,
+  fontWeight: "bold",
+  color: theme.colors.text,
+}));
 
 const Logo: React.FC = () => {
   return (
-    <View style={styles.logoContainer}>
-      <Text style={styles.logo}>Stonks</Text>
+    <LogoContainer>
+      <LogoText>Stonks</LogoText>
       <MaterialIcons name="stacked-line-chart" size={24} color="#6200EE" />
-    </View>
+    </LogoContainer>
   );
 };
 
 export default Logo;
-
-const styles = StyleSheet.create({
-  logoContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 20,
-    marginBottom: 30,
-    width: "100%",
-  },
-  logo: {
-    textAlign: "center",
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-});
