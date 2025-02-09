@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, Platform } from "react-native";
+import { View, Image, Platform } from "react-native";
 import styled from "@emotion/native";
 import * as ImagePicker from "expo-image-picker";
 import { Theme } from "@/components/theme/Theme";
@@ -32,10 +32,6 @@ const ImageContainer = styled(View)<{ theme?: Theme}>(({ theme }) => ({
 const ProfileImage = styled(Image)(() => ({
   width: "100%",
   height: "100%",
-}));
-
-const PlaceholderText = styled(Text)(() => ({
-  color: "#888",
 }));
 
 const ButtonContainer = styled(View)(() => ({
