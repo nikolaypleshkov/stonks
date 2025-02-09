@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, View, Text } from "react-native";
+import { Platform, View, Text, ActivityIndicator } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import styled from "@emotion/native";
 import { useTheme } from "@emotion/react";
@@ -9,6 +9,7 @@ import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
 import { Theme } from "@/components/theme/Theme";
 import Divider from "@/components/ui/Divider";
+import { useLoginMutation } from "@/api/authApi";
 
 const ImageContainer = styled(View)(() => ({
   position: "relative",
@@ -29,6 +30,8 @@ interface LoginPayload {
 
 const LoginForm: React.FC = () => {
   const theme = useTheme();
+  const [login, result] = useLoginMutation();
+
   const {
     control,
     handleSubmit,
@@ -42,6 +45,7 @@ const LoginForm: React.FC = () => {
 
   const onSubmit = React.useCallback((formData: LoginPayload) => {
     console.log(formData);
+    login(formData).then((res) => console.log("res", res));
   }, []);
 
   return (
@@ -96,7 +100,12 @@ const LoginForm: React.FC = () => {
           },
         }}
       />
-      <Button onPress={handleSubmit(onSubmit)} title={"Login"} size="medium" />
+      <Button
+        onPress={handleSubmit(onSubmit)}
+        title={"Login"}
+        size="medium"
+        disabled={result.isLoading}
+      />
       <View style={{ flex: 1 }} />
       <Divider title="or connect with" />
       <ButtonContainer>
@@ -106,6 +115,7 @@ const LoginForm: React.FC = () => {
           }
           title="Google"
           type="clear"
+          disabled={result.isLoading}
         />
         {Platform.OS === "ios" && (
           <Button
@@ -114,6 +124,7 @@ const LoginForm: React.FC = () => {
             }
             title="Apple"
             type="clear"
+            disabled={result.isLoading}
           />
         )}
       </ButtonContainer>
