@@ -21,36 +21,67 @@ type ButtonComponentProps = TouchableOpacityProps & {
   size?: ButtonSize;
   title: string;
   type?: ButtonType;
+  icon?: React.ReactNode;
 };
 
 const StyledButton = styled(TouchableOpacity, {
   shouldForwardProp: (prop) =>
     prop !== "color" && prop !== "size" && prop !== "type",
-})<{ color: ButtonComponentColor; size: ButtonSize; type: ButtonType, theme?: Theme }>(
-  ({ theme, color, size, type }) => ({
-    backgroundColor: type === 'clear' || type === 'outline' ? 'transparent' :  theme.colors[color],
-    padding: theme.spaces[size],
-    borderRadius: 5,
-    alignItems: "center",
-    justifyContent: "center",
-    margin: theme.spaces.small,
-    borderWidth: type === 'outline' ? .5 : 0,
-  })
-);
+})<{
+  color: ButtonComponentColor;
+  size: ButtonSize;
+  type: ButtonType;
+  theme?: Theme;
+}>(({ theme, color, size, type }) => ({
+  backgroundColor:
+    type === "clear" || type === "outline"
+      ? "transparent"
+      : theme.colors[color],
+  padding: theme.spaces[size],
+  borderRadius: 5,
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "center",
+  margin: theme.spaces.small,
+  borderWidth: type === "outline" ? 0.5 : 0,
+}));
 
 const StyledText = styled(Text, {
   shouldForwardProp: (prop) => prop !== "type",
-})<{ type: ButtonType, theme?: Theme }>(({ theme, type }) => ({
-  color: type === "clear" || type === 'outline' ? theme.colors.buttonSecondaryText : theme.colors.buttonText,
+})<{ type: ButtonType; theme?: Theme }>(({ theme, type }) => ({
+  color:
+    type === "clear" || type === "outline"
+      ? theme.colors.buttonSecondaryText
+      : theme.colors.buttonText,
   fontSize: 16,
 }));
 
-const Button = React.forwardRef<LinkProps, ButtonComponentProps>(({ title, color = "primary", size = "small", type = 'solid', ...rest }, ref) => {
-  return (
-    <StyledButton color={color} size={size} type={type} {...rest} className="stonk-button">
-      <StyledText type={type}>{title}</StyledText>
-    </StyledButton>
-  );
-});
+const StyledIcon = styled.View<{ theme?: Theme }>(({ theme }) => ({
+  marginRight: theme.spaces.small,
+  color: theme.colors.buttonText,
+  '& > *': {
+    color: theme.colors.buttonText,
+  }
+}));
+
+const Button = React.forwardRef<LinkProps, ButtonComponentProps>(
+  (
+    { title, color = "primary", size = "small", type = "solid", icon, ...rest },
+    ref
+  ) => {
+    return (
+      <StyledButton
+        color={color}
+        size={size}
+        type={type}
+        {...rest}
+        className="stonk-button"
+      >
+        <StyledIcon>{icon}</StyledIcon>
+        <StyledText type={type}>{title}</StyledText>
+      </StyledButton>
+    );
+  }
+);
 
 export default Button;

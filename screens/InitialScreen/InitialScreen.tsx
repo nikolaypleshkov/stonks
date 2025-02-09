@@ -40,21 +40,21 @@ const InitialScreen: React.FC = () => {
         <Link href={{ pathname: "/auth/register" }} asChild>
           <Button title="Open Account" color="primary" size="medium" />
         </Link>
-        <Button title="Log in" color="primary" type="clear" size="medium" />
+        <Link href={{ pathname: "/auth/login" }} asChild>
+          <Button title="Log in" color="primary" type="clear" size="medium" />
+        </Link>
       </View>
     </Container>
   );
 };
 
-
-const Container = styled(SafeAreaView)<{ theme?: Theme}>(({ theme }) => ({
+const Container = styled(SafeAreaView)<{ theme?: Theme }>(({ theme }) => ({
   flex: 1,
   padding: 20,
   backgroundColor: theme.colors.background,
 }));
 
 const styles = StyleSheet.create({
-
   logoContainer: {
     flexDirection: "row",
     alignItems: "center",

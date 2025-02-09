@@ -4,6 +4,11 @@ import RegisterForm from "./RegisterForm";
 import styled from "@emotion/native";
 import { Theme } from "@/components/theme/Theme";
 
+const Container = styled(SafeAreaView)<{ theme?: Theme }>(({ theme }) => ({
+  flex: 1,
+  backgroundColor: theme.colors.background,
+}));
+
 const RegisterView: React.FC = () => {
   return (
     <Container>
@@ -13,8 +18,3 @@ const RegisterView: React.FC = () => {
 };
 
 export default RegisterView;
-
-const Container = styled(SafeAreaView)<{ theme?: Theme }>(({ theme }) => ({
-  flex: 1,
-  backgroundColor: theme.colors.background,
-}));
