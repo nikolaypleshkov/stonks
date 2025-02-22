@@ -10,6 +10,7 @@ export const authApi = createApi({
         method: "POST",
         body,
       }),
+      transformErrorResponse: (response) => null,
     }),
     register: builder.mutation({
       query: (body) => ({

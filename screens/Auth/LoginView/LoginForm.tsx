@@ -10,6 +10,10 @@ import Logo from "@/components/ui/Logo";
 import { Theme } from "@/components/theme/Theme";
 import Divider from "@/components/ui/Divider";
 import { useLoginMutation } from "@/api/authApi";
+import { useAppDispatch } from "@/store";
+import { setUser } from "@/store/slices/userSlice";
+import mockUser from "@/mocks/mockUser";
+import { router } from "expo-router";
 
 const ImageContainer = styled(View)(() => ({
   position: "relative",
@@ -30,6 +34,7 @@ interface LoginPayload {
 
 const LoginForm: React.FC = () => {
   const theme = useTheme();
+  const dispatch = useAppDispatch();
   const [login, result] = useLoginMutation();
 
   const {
@@ -45,7 +50,15 @@ const LoginForm: React.FC = () => {
 
   const onSubmit = React.useCallback((formData: LoginPayload) => {
     console.log(formData);
-    login(formData).then((res) => console.log("res", res));
+    login(formData)
+      .then((res) => console.log("res", res))
+      .catch(() => {
+        console.log("error");
+        dispatch(setUser(mockUser));
+      }).finally(() => {
+        router.navigate("/dashboard");
+        dispatch(setUser(mockUser));
+      });
   }, []);
 
   return (

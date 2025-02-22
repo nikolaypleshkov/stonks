@@ -1,6 +1,4 @@
-import { DarkTheme, DefaultTheme } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
@@ -12,7 +10,9 @@ import darkThemeOptions from "@/components/theme/dark-theme-options";
 import lightThemeOptions from "@/components/theme/light-theme-options";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider } from "react-redux";
-import store from "@/store";
+import store, { persistor } from "@/store";
+import { PersistGate } from "redux-persist/integration/react";
+import AppNavigator from "./AppNavigator";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -38,22 +38,12 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <Stack>
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="auth/register/index"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="auth/login/index"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" options={{ headerShown: false }} />
-          </Stack>
-          <StatusBar style="auto" />
-        </ThemeProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <ThemeProvider theme={theme}>
+            <AppNavigator />
+            <StatusBar style="auto" />
+          </ThemeProvider>
+        </PersistGate>
       </Provider>
     </GestureHandlerRootView>
   );
